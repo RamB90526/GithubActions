@@ -37,6 +37,7 @@ jobs:
             -scheme GithubActions \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.0' \
+            -enableCodeCoverage YES \
             CODE_SIGNING_ALLOWED=NO | xcpretty
         working-directory: ./GithubActions  # Keep this if your project is in a subfolder
 
