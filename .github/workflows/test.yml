@@ -3,6 +3,7 @@ name: Xcode Tests
 on:
   pull_request:
     branches:
+      - main
       - develop
 
 jobs:
@@ -23,16 +24,7 @@ jobs:
         run: |
           sudo gem install cocoapods
           pod repo update
-          
-    - name: Cache CocoaPods
-      uses: actions/cache@v3
-      with:
-        path: Pods
-        key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
-        restore-keys: |
-        ${{ runner.os }}-pods-
-
-
+    
       - name: Install Dependencies
         run: |
           pod install
