@@ -28,7 +28,7 @@ jobs:
       - name: Install Dependencies
         run: |
           pod install
-        working-directory: GithubActions  # Adjust this path to where your xcworkspace is located
+        # No need to specify working-directory if xcworkspace is in the root
 
       - name: Build and Test
         run: |
@@ -39,7 +39,7 @@ jobs:
             -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.0' \
             -enableCodeCoverage YES \
             CODE_SIGNING_ALLOWED=NO | xcpretty
-        working-directory: GithubActions  # Adjust this path to where your xcworkspace is located
+        # No need to specify working-directory if xcworkspace is in the root
 
       - name: Upload Test Results
         if: always()
