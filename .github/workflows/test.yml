@@ -1,0 +1,55 @@
+name: Xcode Tests
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Ruby (if needed)
+        run: |
+          brew install ruby
+          gem install bundler
+
+      - name: Install CocoaPods
+        run: |
+          sudo gem install cocoapods
+          pod repo update
+
+      - name: Install Dependencies
+        run: |
+          pod install
+        working-directory: ./GithubActions # Replace with your project's directory if not in root
+
+      - name: Build and Test
+        run: |
+          xcodebuild clean build test \
+            -workspace GithubActions.xcworkspace \  # Replace with your workspace name
+            -scheme GithubActions \                  # Replace with your scheme name
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.0' \
+            CODE_SIGNING_ALLOWED=NO | xcpretty
+        working-directory: ./GithubActions # Ensure this matches the previous step
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: xcode-test-results
+          path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
+
+      - name: Upload Build Logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-logs
+          path: build.log
+
