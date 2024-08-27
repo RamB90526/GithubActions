@@ -36,12 +36,12 @@ jobs:
       - name: Build and Test
         run: |
           xcodebuild clean build test \
-            -workspace GithubActions.xcworkspace \
-            -scheme GithubActions \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.1' \
-            -enableCodeCoverage YES \
-            CODE_SIGNING_ALLOWED=NO | xcpretty
+          -workspace GithubActions.xcworkspace \
+          -scheme GithubActions \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.1' \
+          -enableCodeCoverage YES \
+          CODE_SIGNING_ALLOWED=NO | xcpretty
 
       - name: Upload Test Results
         if: always()
