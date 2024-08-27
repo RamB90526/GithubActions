@@ -28,7 +28,10 @@ jobs:
       - name: Install Dependencies
         run: |
           pod install
-        # No need to specify working-directory if xcworkspace is in the root
+
+      - name: Install xcpretty
+        run: |
+          gem install xcpretty
 
       - name: Build and Test
         run: |
@@ -36,10 +39,9 @@ jobs:
             -workspace GithubActions.xcworkspace \
             -scheme GithubActions \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.0' \
+            -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.1' \
             -enableCodeCoverage YES \
             CODE_SIGNING_ALLOWED=NO | xcpretty
-        # No need to specify working-directory if xcworkspace is in the root
 
       - name: Upload Test Results
         if: always()
@@ -54,3 +56,4 @@ jobs:
         with:
           name: build-logs
           path: build.log
+
