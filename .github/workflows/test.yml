@@ -32,10 +32,6 @@ jobs:
       - name: Install xcpretty
         run: |
           gem install xcpretty
-          
-      - name: Run tests
-        run: |
-           swift test --enable-code-coverage -v
 
       - name: Build and Test
         run: |
