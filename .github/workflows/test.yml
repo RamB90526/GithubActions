@@ -32,6 +32,10 @@ jobs:
       - name: Install xcpretty
         run: |
           gem install xcpretty
+          
+      - name: Run tests
+        run: |
+           swift test --enable-code-coverage -v
 
       - name: Build and Test
         run: |
@@ -41,7 +45,7 @@ jobs:
           -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.1' \
           -enableCodeCoverage YES \
-          CODE_SIGNING_ALLOWED=NO | xcpretty
+            CODE_SIGNING_ALLOWED=NO | xcpretty
 
       - name: Upload Test Results
         if: always()
