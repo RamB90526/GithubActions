@@ -42,6 +42,7 @@ jobs:
           -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.1' \
           -enableCodeCoverage YES \
             CODE_SIGNING_ALLOWED=NO | xcpretty
+          working-directory: ./GithubActions
 
       - name: Upload Test Results
         if: always()
