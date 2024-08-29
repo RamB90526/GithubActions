@@ -3,6 +3,7 @@ name: Xcode Tests
 on:
   pull_request:
     branches:
+      - main
       - develop
 
 jobs:
@@ -23,30 +24,25 @@ jobs:
         run: |
           sudo gem install cocoapods
           pod repo update
-          
-    - name: Cache CocoaPods
-      uses: actions/cache@v3
-      with:
-        path: Pods
-        key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
-        restore-keys: |
-        ${{ runner.os }}-pods-
-
-
+    
       - name: Install Dependencies
         run: |
           pod install
-        working-directory: ./GithubActions # Replace with your project's directory if not in root
+
+      - name: Install xcpretty
+        run: |
+          gem install xcpretty
 
       - name: Build and Test
         run: |
-          xcodebuild clean build test \
-            -workspace GithubActions.xcworkspace \  # Replace with your workspace name
-            -scheme GithubActions \                  # Replace with your scheme name
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.0' \
+          set -o pipefail && xcodebuild test
+          -workspace GithubActions.xcworkspace \
+          -scheme GithubActions \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.1' \
+          -enableCodeCoverage YES \
             CODE_SIGNING_ALLOWED=NO | xcpretty
-        working-directory: ./GithubActions # Ensure this matches the previous step
+          working-directory: ./GithubActions
 
       - name: Upload Test Results
         if: always()
